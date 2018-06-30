@@ -7,10 +7,19 @@ defmodule EngineWeb.TodoController do
   end
 
   def new(conn, _params) do
-    render conn, "new.html"
+    changeset = Engine.Todo.changeset(%Engine.Todo{})
+    render conn, "new.html", changeset: changeset
   end
 
-  def create(conn, params) do
-    redirect conn, to: "/"
+  def create(conn, %{"todo" => todo_params}) do
+    changeset = Engine.Todo.changeset(%Engine.Todo{}, todo_params)
+    case Engine.Repo.insert(changeset) do
+      {:ok, todo} ->
+        conn
+          |> put_flash(:success, "#{todo.id} created.")
+          |> redirect(to: todo_path(conn, :index))
+      {:error, changeset} ->
+        render(conn, "new.html", changeset: changeset)
+    end
   end
 end

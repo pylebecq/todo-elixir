@@ -17,6 +17,8 @@ defmodule EngineWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", TodoController, :index
+    get "/add", TodoController, :new
+    post "/create", TodoController, :create
   end
 
   # Other scopes may use custom stacks.

@@ -4,7 +4,6 @@ defmodule Engine.Todo do
 
 
   schema "todos" do
-    field :created_at, :utc_datetime
     field :done, :boolean, default: false
     field :done_at, :utc_datetime
     field :title, :string
@@ -13,10 +12,10 @@ defmodule Engine.Todo do
   end
 
   @doc false
-  def changeset(todo, attrs) do
+  def changeset(todo, attrs \\ %{}) do
     todo
-    |> cast(attrs, [:title, :done, :created_at, :done_at])
-    |> validate_required([:title, :done, :created_at])
+    |> cast(attrs, [:title, :done, :done_at])
+    |> validate_required([:title, :done])
     |> validate_length(:title, min: 1)
     |> validate_length(:title, max: 255)
   end
