@@ -19,6 +19,7 @@ defmodule EngineWeb.Router do
     get "/", TodoController, :index
     get "/add", TodoController, :new
     post "/create", TodoController, :create
+    delete "/:id", TodoController, :delete
   end
 
   # Other scopes may use custom stacks.

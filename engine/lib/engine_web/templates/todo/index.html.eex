@@ -19,7 +19,10 @@
                 <tr>
                     <td><%= todo.title %></td>
                     <td><%= status(todo) %></td>
-                    <td>Edit Delete</td>
+                    <td>
+                        Edit
+                        <%= link "Delete", to: "/#{todo.id}", method: "delete" %>
+                    </td>
                 </tr>
             <% end %>
         </table>
