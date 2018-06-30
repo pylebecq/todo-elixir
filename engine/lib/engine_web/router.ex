@@ -19,6 +19,8 @@ defmodule EngineWeb.Router do
     get "/", TodoController, :index
     get "/add", TodoController, :new
     post "/create", TodoController, :create
+    get "/:id/edit", TodoController, :edit
+    put "/:id/update", TodoController, :update
     delete "/:id", TodoController, :delete
   end
 

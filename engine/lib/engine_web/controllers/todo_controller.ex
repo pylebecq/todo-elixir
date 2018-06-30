@@ -23,12 +23,45 @@ defmodule EngineWeb.TodoController do
     end
   end
 
+  def edit(conn, %{"id" => id}) do
+    todo = Engine.Repo.get(Engine.Todo, id)
+    if todo do
+      changeset = Engine.Todo.changeset(todo)
+      render(conn, "edit.html", todo: todo, changeset: changeset)
+    else
+      conn
+        |> put_status(:not_found)
+        |> put_view(EngineWeb.ErrorView)
+        |> render("404.html")
+    end
+  end
+
+  def update(conn, %{"id" => id, "todo" => todo_params}) do
+    todo = Engine.Repo.get(Engine.Todo, id)
+    if todo do
+      changeset = Engine.Todo.changeset(todo, todo_params)
+      case Engine.Repo.update(changeset) do
+        {:ok, todo} ->
+          conn
+            |> put_flash(:success, "Todo ##{todo.id} was updated.")
+            |> redirect(to: todo_path(conn, :index))
+        {:error, changeset} ->
+          render(conn, "edit.html", todo: todo, changeset: changeset)
+      end
+    else
+      conn
+        |> put_status(:not_found)
+        |> put_view(EngineWeb.ErrorView)
+        |> render("404.html")
+    end
+  end
+
   def delete(conn, %{"id" => id}) do
     todo = Engine.Repo.get(Engine.Todo, id)
     if todo do
       case Engine.Repo.delete(todo) do
         {:ok, todo} -> put_flash(conn, :success, "Todo ##{todo.id} deleted.")
-        {:error, changeset} -> put_flash(conn, :error, "Cannot delete Todo ##{id}.")
+        {:error, _} -> put_flash(conn, :error, "Cannot delete Todo ##{id}.")
       end
     else
       put_flash(conn, :error, "Cannot delete Todo ##{id}.")

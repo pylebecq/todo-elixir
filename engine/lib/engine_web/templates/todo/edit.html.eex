@@ -1,0 +1,29 @@
+<%= if @changeset.action do %>
+    <div class="alert alert-danger">
+        <p>Some data are invalid or missing. Please check the errors bellow.</p>
+    </div>
+<% end %>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2>Edit Todo <%= @todo.id %></h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <%= form_for @changeset, todo_path(@conn, :update, @todo.id), fn f -> %>
+            <div class=form-group>
+                <%= label f, :title %>
+                <%= text_input f, :title, placeholder: "What do you need to do?", class: "form-control" %>
+                <%= error_tag f, :title %>
+            </div>
+            <div class="checkbox">
+                <%= checkbox f, :done %>
+                <%= label f, :done %>
+                <%= error_tag f, :done %>
+            </div>
+            <%= submit "Update", class: "btn btn-primary" %>
+        <% end %>
+    </div>
+</div>
