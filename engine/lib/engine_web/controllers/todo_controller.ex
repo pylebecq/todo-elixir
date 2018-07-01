@@ -58,7 +58,7 @@ defmodule EngineWeb.TodoController do
 
   def delete(conn, %{"id" => id}) do
     todo = Engine.Repo.get(Engine.Todo, id)
-    if todo do
+    conn = if todo do
       case Engine.Repo.delete(todo) do
         {:ok, todo} -> put_flash(conn, :success, "Todo ##{todo.id} deleted.")
         {:error, _} -> put_flash(conn, :error, "Cannot delete Todo ##{id}.")
