@@ -20,7 +20,7 @@ defmodule Engine.Mixfile do
   def application do
     [
       mod: {Engine.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :phoenix_pubsub_redis]
     ]
   end
 
@@ -40,7 +40,8 @@ defmodule Engine.Mixfile do
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
-      {:cowboy, "~> 1.0"}
+      {:cowboy, "~> 1.0"},
+      {:phoenix_pubsub_redis, "~> 2.1"}
     ]
   end
 

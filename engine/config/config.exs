@@ -14,8 +14,9 @@ config :engine, EngineWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "nOwUYHN6Kl+NIKNDbK6VAiNPIIip6LbxbvSjfYbFvded0Tw7N+JsshxCb423pAA8",
   render_errors: [view: EngineWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Engine.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: :todo_elixir,
+           adapter: Phoenix.PubSub.Redis,
+           node_name: System.get_env("NODE")]
 
 # Configures Elixir's Logger
 config :logger, :console,

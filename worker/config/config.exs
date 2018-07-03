@@ -10,8 +10,9 @@ config :worker, WorkerWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "rP9IffF/vhnVl72nqErr+f7mnDaJibMFXH+FFOzZ/wSBXdV5OUQyL51VqXfSfB7j",
   render_errors: [view: WorkerWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Worker.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: :todo_elixir,
+           adapter: Phoenix.PubSub.Redis,
+           node_name: System.get_env("NODE")]
 
 # Configures Elixir's Logger
 config :logger, :console,

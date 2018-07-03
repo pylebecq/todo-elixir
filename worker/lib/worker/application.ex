@@ -12,6 +12,7 @@ defmodule Worker.Application do
       supervisor(WorkerWeb.Endpoint, []),
       # Start your own worker by calling: Worker.Worker.start_link(arg1, arg2, arg3)
       # worker(Worker.Worker, [arg1, arg2, arg3]),
+      supervisor(Worker.ActivitySubscriber, ["activity:all"])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
