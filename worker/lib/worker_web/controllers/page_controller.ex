@@ -2,9 +2,7 @@ defmodule WorkerWeb.PageController do
   use WorkerWeb, :controller
 
   def index(conn, _params) do
-    pid = GenServer.whereis(Worker.ActivitySubscriber)
-    todos = Worker.ActivitySubscriber.get_todos(pid)
-    IO.inspect todos
+    todos = Worker.TodoStorage.get_all()
     render(conn, "index.html", todos: todos)
   end
 end

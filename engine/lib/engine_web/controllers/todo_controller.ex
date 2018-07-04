@@ -15,7 +15,17 @@ defmodule EngineWeb.TodoController do
     changeset = Engine.Todo.changeset(%Engine.Todo{}, todo_params)
     case Engine.Repo.insert(changeset) do
       {:ok, todo} ->
-        EngineWeb.Endpoint.broadcast("activity:all", "todo:new", todo)
+        #EngineWeb.Endpoint.broadcast("activity:all", "todo:new", todo)
+        Engine.Amqp.publish(
+          %{
+            "type" => "todo_put",
+            "todo" => %{
+              "id" => todo.id,
+              "title" => todo.title,
+              "done" => todo.done
+            }
+          }
+        )
         conn
           |> put_flash(:success, "Todo ##{todo.id} created.")
           |> redirect(to: todo_path(conn, :index))
@@ -43,7 +53,17 @@ defmodule EngineWeb.TodoController do
       changeset = Engine.Todo.changeset(todo, todo_params)
       case Engine.Repo.update(changeset) do
         {:ok, todo} ->
-          EngineWeb.Endpoint.broadcast("activity:all", "todo:update", todo)
+          #EngineWeb.Endpoint.broadcast("activity:all", "todo:update", todo)
+          Engine.Amqp.publish(
+            %{
+              "type" => "todo_put",
+              "todo" => %{
+                "id" => todo.id,
+                "title" => todo.title,
+                "done" => todo.done
+              }
+            }
+          )
           conn
             |> put_flash(:success, "Todo ##{todo.id} was updated.")
             |> redirect(to: todo_path(conn, :index))
@@ -63,7 +83,15 @@ defmodule EngineWeb.TodoController do
     conn = if todo do
       case Engine.Repo.delete(todo) do
         {:ok, todo} ->
-          EngineWeb.Endpoint.broadcast("activity:all", "todo:delete", %{id: id})
+          #EngineWeb.Endpoint.broadcast("activity:all", "todo:delete", %{id: id})
+          Engine.Amqp.publish(
+            %{
+              "type" => "todo_delete",
+              "todo" => %{
+                "id" => id,
+              }
+            }
+          )
           put_flash(conn, :success, "Todo ##{todo.id} deleted.")
         {:error, _} -> put_flash(conn, :error, "Cannot delete Todo ##{id}.")
       end

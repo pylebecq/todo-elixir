@@ -14,7 +14,8 @@ defmodule Engine.Application do
       supervisor(EngineWeb.Endpoint, []),
       # Start your own worker by calling: Engine.Worker.start_link(arg1, arg2, arg3)
       # worker(Engine.Worker, [arg1, arg2, arg3]),
-      supervisor(Engine.ActivitySubscriber, ["activity:all"])
+      worker(Engine.Amqp, []),
+      worker(Engine.ActivitySubscriber, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

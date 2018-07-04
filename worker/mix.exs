@@ -19,7 +19,7 @@ defmodule Worker.Mixfile do
   def application do
     [
       mod: {Worker.Application, []},
-      extra_applications: [:logger, :runtime_tools, :phoenix_pubsub_redis]
+      extra_applications: [:logger, :runtime_tools, :phoenix_pubsub_redis, :amqp]
     ]
   end
 
@@ -38,7 +38,8 @@ defmodule Worker.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:phoenix_pubsub_redis, "~> 2.1"}
+      {:phoenix_pubsub_redis, "~> 2.1"},
+      {:amqp, "~> 0.3"},
     ]
   end
 end
